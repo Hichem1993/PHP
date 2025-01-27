@@ -9,7 +9,7 @@ Vagrant.configure("2") do |config|
     config.vm.network "forwarded_port", guest: 80, host: 1234, host_ip: "127.0.0.1"
   
     ## http://192.168.33.11
-    config.vm.network "private_network", ip: "192.168.33.11"
+    config.vm.network "private_network", ip: "192.168.56.11"
   
     ## dossier est en cours en partagé avec la machine virtuelle 
     config.vm.synced_folder ".", "/var/www/html"
