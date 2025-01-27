@@ -30,8 +30,21 @@ $c = -2.5;
 echo $a / $c . "<br>";
 echo $a * $c + $a . "<br>";
 echo $a * ($c + $a) . "<br>";
+
 // echo $a / $b . "<br>";
+try {
+    echo $a / $b . "<br>";
+}catch(DivisionByZeroError $e){
+    echo $e -> getMessage() . "<br>";
+}
+
 // echo $c / $b . "<br>";
+try {
+    echo $c / $b . "<br>";
+}catch(DivisionByZeroError $e){
+    echo $e -> getMessage() . "<br>";
+}
+
 
 
 echo "<h1>Cas 2</h1>";
