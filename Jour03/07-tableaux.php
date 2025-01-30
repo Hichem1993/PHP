@@ -36,7 +36,7 @@ echo $presentation["unite"]; // utiliser le nom de la clé
 $infos = array( 1,2,3,4 ); // ancienne notation pour créer un tableau indexé
 $infos = [ 1,2,3,4 ]; // ancienne notation
 
-$etudiants = array( 
+$etudiants = array(
     "nom" => "Alain",
     "age" => 24
 );
@@ -49,9 +49,8 @@ $b = array('avocado', 'apple', 'banana');
 $a = ['green', 'red', 'yellow'];
 $b = ['avocado', 'apple', 'banana'];
 
-// les opérations sur les tableaux 
-// CRUD 
-// découvrir des fonctions natives de PHP 
+// les opérations sur les tableaux
+// CRUD
+// découvrir des fonctions natives de PHP
 
 // https://www.php.net/manual/fr/ref.array.php
-// 
