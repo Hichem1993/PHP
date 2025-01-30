@@ -63,8 +63,21 @@ foreach($adresse as $rue){
 $formation = [
     "duree" => 2,
     "nom" => "DWWM",
-    "unite" => "mois"
+    "unite" => "mois",
+    "img" => "https//via.placeholder.com/400x200"
 ];
 
 // Les chiffres/positions ne fonctionnent pas
 // echo $formation[0]; "Ne fonctionnent pas"
+// Pour les tableaux associatifs ==> vous ne pouvez pas utiliser la boucle for
+// Vous etes obligé d'utiliser la boucle foreach
+
+// Recuperer le valeur du tableau :
+foreach ($formation as $valeur){
+    echo $valeur . "<br>";
+};
+
+// Recuperer le cle et le valeur du tableau :
+foreach($formation as $cle => $valeur){
+    echo $cle . " : " . $valeur . "<br>";
+};
