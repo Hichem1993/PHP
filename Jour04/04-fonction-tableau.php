@@ -49,9 +49,11 @@ var_dump($ville);
 // UPDATE :
 
 $societe = ["Total" , "LVMH" , "Greta"];
+
 // Méthode 1 :
 $societe[0] = "Shell";
 var_dump($societe);
+
 // OR : Méthode 2 :
 // Changer LVMH avec Chanel :
 array_splice($societe, 1 , 1 , "Chanel");  // 1 : Position  -  1 : Nombre d'élement à supprimer
@@ -62,3 +64,15 @@ var_dump($societe);
 
 
 // DELETE :
+
+$recettes = ["Frites" , "Pates" , "Ratatouille"];
+
+// Méthode 1 :
+unset($recettes[1]);  // Supprimer Pates
+array_splice($recettes, 1, 1);  // Supprimer Pates
+
+// Méthode 2 :
+array_pop($recettes);  // Supprimer le dernier
+
+// Méthode 3 :
+array_shift($recettes);  // Supprimer le premier
