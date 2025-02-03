@@ -12,6 +12,11 @@
                 <label for="password">Votre password</label>
             </div>
         </section>
+        <?php if (isset($_SESSION["erreur"])) : ?>
+            <div class="alert alert-danger">
+                    les identifiants sont invalides ...
+            </div>
+        <?php endif ?>
         <div class="d-flex justify-content-center" >
             <input type="submit" value="Envoyer" class="btn btn-outline-primary">
         </div>
