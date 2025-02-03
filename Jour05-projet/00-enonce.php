@@ -30,6 +30,7 @@ $annuaire = [
 // page d'accueil => lister l'ensemble des membres du l'annuaire
 // page Alain => afficher le profil de ALain et afficher l'ensemble de ses informations personnelles
 // page Zorro => afficher le profil de Zorro et afficher l'ensemble de ses informations personnelles
-// utiliser la manière de créer des sites présenté précédemment + bootstrap pour la mise en forme 
-
+// utiliser la manière de créer des sites présenté précédemment + bootstrap pour la mise en forme
 */
+
+?>
