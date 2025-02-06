@@ -37,4 +37,5 @@ Commentaire
 - Lancer terminal
 - vagrant up (Pour installer la machine)
 - vagrant destroy (Pour supprimer la machine)
+- vagrant halt (Arreter la machine)
 - tester avec l'adresse ip
