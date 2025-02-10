@@ -8,3 +8,10 @@
 ## Etape 1 :
 - Créer 3 dossiers : vue / controller / modem
 - Créer un fichier index.php
+
+
+## MENU :
+header.php : Ajouter les lien de menu
+index.php : Ajouter nom de la page dans le tableau routes
+Frontcontroller : Ajouter la function avec lenom du page : this->render....
+Créer la page ajouter dans le dossier Vue
