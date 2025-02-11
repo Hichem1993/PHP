@@ -23,9 +23,9 @@ class BDD{
     }
 
     // Pour la requette sql :
-    public function query(string $sql){
+    public function query(string $sql , array $params=[]){
         $stmt = $this->connexion->prepare($sql);
-        $stmt->execute();
+        $stmt->execute($params);
         return $stmt->fetchAll(PDO::FETCH_ASSOC); // Enlever les doublons : nom afficher les chiffres
     }
 

@@ -27,9 +27,17 @@ $routes = [
 //? Connexion avec la BDD
 require_once "Model/BDD.php";
 // var_dump(BDD::getInstance());     =====>    Vérifier la connexion
-//? Executer la méthode FrontController :
+
+//? Executer les méthodes :
+require_once "Controller/AbstractController.php";
 require_once "Controller/FrontController.php";
+require_once "Controller/ErreurController.php";
+
+
 if(array_key_exists($page , $routes)){
     $p = new FrontController();
     $p->{$routes[$page]}();
+}else{ // Si il tape une adresse ip n'existe pas
+    $p = new ErreurController();
+    $p->erreur(404, "La page demandée n'existe pas");
 }
