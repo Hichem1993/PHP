@@ -17,11 +17,11 @@ if(isset($_GET["page"]) && !empty($_GET["page"])){
 //? Tableau associatif qui fait le lien entre la page demandée ET le Controller :
 // Début du routeur
 $routes = [
-    "/" => "home",   // méthode qui est dans un controlleur
-    "presentation" => "presentation",  // Si dans le GET il y a dans $_GET["page"] ==> "presentation" ==> Exécuter la métode presentation dans la class FrontController
-    "contact" => "contact",
-    "connexion" => "connexion",
-    "inscription" => "inscription"
+    "/" => ["home" , "FrontController"],   // méthode qui est dans un controlleur
+    "presentation" => ["presentation" , "FrontController"],  // Si dans le GET il y a dans $_GET["page"] ==> "presentation" ==> Exécuter la métode presentation dans la class FrontController
+    "contact" => ["contact" , "FrontController"],
+    "connexion" => ["connexion" , "FrontController"],
+    "inscription" => ["inscription" , "FrontController"]
 ];
 
 //? Connexion avec la BDD

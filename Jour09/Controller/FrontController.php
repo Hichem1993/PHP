@@ -107,8 +107,51 @@ class FrontController extends AbstractController {
 
 
     public function connexion(){
+        $erreur = [];
+        
+        if(!empty($_POST)){
+            // Récuperer les valeur saisie dans le formulaire
+            $email = isset($_POST["email"]) ? $_POST["email"] : "" ;
+            $password = isset($_POST["password"]) ? $_POST["password"] : "" ;
+            // Vérifier que les informations sont conformes
+                    // email valid - password valid
+                    // est ce que les identifiants saisis existent dans la base de données
+            if(!filter_var($email , FILTER_VALIDATE_EMAIL)){
+                $erreur[] = "l'email n'est pas conforme"; 
+            }
+            if(!preg_match("#(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}#", $password)){
+                $erreur[] = "Le password doit contenir au minimum 8 lettres avec minuscule, majuscule et chiffre";
+            }
+
+            $user = BDD::getInstance()->query("SELECT * FROM user WHERE email = :email", ["email" => $email]);
+            // si KO ==> message d'erreur
+            if(empty($user)){
+                $erreur[] = "Aucun utilisateur n'a l'email saisit";
+            }else{
+                $password_hash = $user[0]["password"];
+                // Comparer le mot de passe saisie avec le mot de passe hashé qui est dans la base de données
+                if(!password_verify($_POST["password"], $password_hash)){
+                    $erreur[] = "Le mot de passe saisie n'est pas conforme";
+                }
+            }
+            
+            // Si OK ==> $_SESSION : Super globale qui va suivre l'utilisateur tout au long de son utilisation de backoffice
+            // SESSION une sorte de chariot qui vous accompagne pendant l'utilisation du back office
+            if(count($erreur) === 0 && !empty($_POST)){
+                $_SESSION["user"] = [
+                    "email" => $user[0]["email"],
+                    "role" => $user[0]["role"]
+                ];
+                header("Location: http://192.168.56.11/Jour09/index.php?page=admin/dashboard");
+                die();
+            }
+        }
+
+        
+
         $data = [
-            "titre" => "Connexion"
+            "titre" => "Connexion",
+            "erreur" => $erreur
         ];
         $this->render("connexion" , $data);
     }
