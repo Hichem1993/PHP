@@ -3,6 +3,7 @@ declare(strict_types = 1);
 session_start();
 // http://192.168.56.11/Jour09/index.php
 
+define("URL", "http://192.168.56.11/Jour09/index.php");
 
 $page = "";
 

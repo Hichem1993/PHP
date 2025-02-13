@@ -4,7 +4,7 @@ class BackController extends AbstractController{
 
     public function __construct(){
         if(!isset($_SESSION["user"])){
-            header("Location: http://192.168.56.11/Jour09/index.php?page=erreur401");
+            header("Location: " . URL ."?page=erreur401");
             die();
         }
     }
@@ -88,7 +88,7 @@ class BackController extends AbstractController{
                 ]);
             }
 
-            header("Location: http://192.168.56.11/Jour09/index.php?page=admin/projet");
+            header("Location: " . URL . "?page=admin/projet");
             die(); // BRAVO !!! fin du formulaire !!! 
             // pause rdv à 15h55 @ toute suite !!!!!!!!!!!! 
         }
@@ -137,7 +137,7 @@ class BackController extends AbstractController{
         // supprimer la ligne dans la table projets 
         BDD::getInstance()->query("DELETE FROM projets WHERE id = :id" , ["id" => $id]);
 
-        header("Location: http://192.168.56.11/Jour09/index.php?page=admin/projet");
+        header("Location: " . URL . "?page=admin/projet");
 
     }
 
@@ -220,7 +220,7 @@ class BackController extends AbstractController{
                 ]);
             }
 
-            header("Location: http://192.168.56.11/Jour09/index.php?page=admin/projet");
+            header("Location: " . URL . "?page=admin/projet");
             die(); 
         }
         
@@ -255,6 +255,14 @@ class BackController extends AbstractController{
         ];
 
         $this->render("back/users_index", $data);
+    }
+
+
+    public function user_new(){
+        $data = [
+            "titre" => "Créer un nouveau profil utilisateur"
+        ];
+        $this->render("back/user_form", $data);
     }
 
 

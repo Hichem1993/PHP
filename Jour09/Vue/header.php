@@ -13,14 +13,15 @@
                 Mon premier MVC
             </span>
             <ul class="navbar-nav">
-                <li class="nav-item"><a href="http://192.168.56.11/Jour09/index.php" class="nav-link">Home</a></li>
-                <li class="nav-item"><a href="http://192.168.56.11/Jour09/index.php?page=presentation" class="nav-link">Présentation</a></li>
-                <li class="nav-item"><a href="http://192.168.56.11/Jour09/index.php?page=contact" class="nav-link">Nous contacter</a></li>
+                <li class="nav-item"><a href="<?php echo URL ?>" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="<?php echo URL ?>?page=presentation" class="nav-link">Présentation</a></li>
+                <li class="nav-item"><a href="<?php echo URL ?>?page=contact" class="nav-link">Nous contacter</a></li>
                 <?php if( !isset($_SESSION["user"]) ) : ?>
-                  <li class="nav-item"><a href="http://192.168.56.11/Jour09/index.php?page=inscription" class="nav-link">Inscription</a></li>
-                  <li class="nav-item"><a href="http://192.168.56.11/Jour09/index.php?page=connexion" class="nav-link">Connexion</a></li>
+                  <li class="nav-item"><a href="<?php echo URL ?>?page=inscription" class="nav-link">Inscription</a></li>
+                  <li class="nav-item"><a href="<?php echo URL ?>?page=connexion" class="nav-link">Connexion</a></li>
                 <?php else : ?>
-                  <li class="nav-item"><a href="http://192.168.56.11/Jour09/index.php?page=deconnexion" class="nav-link">Déconnexion</a></li>
+                  <li class="nav-item"><a href="<?php echo URL ?>?page=admin/dashboard" class="nav-link">Back Office</a></li>
+                  <li class="nav-item"><a href="<?php echo URL ?>?page=deconnexion" class="nav-link">Déconnexion</a></li>
                 <?php endif ?>
             </ul>
         </nav>

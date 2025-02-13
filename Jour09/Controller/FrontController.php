@@ -142,7 +142,7 @@ class FrontController extends AbstractController {
                     "email" => $user[0]["email"],
                     "role" => $user[0]["role"]
                 ];
-                header("Location: http://192.168.56.11/Jour09/index.php?page=admin/dashboard");
+                header("Location: ". URL . "?page=admin/dashboard");
                 die();
             }
         }
@@ -160,7 +160,7 @@ class FrontController extends AbstractController {
     public function deconnexion(){
         unset($_SESSION["user"]);
         session_destroy();
-        header("Location:http://192.168.56.11/Jour09/index.php?page=connexion");
+        header("Location:" . URL . "?page=connexion");
     }
 
 
