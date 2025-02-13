@@ -258,12 +258,205 @@ class BackController extends AbstractController{
     }
 
 
+    // Ajouter user :
     public function user_new(){
+
+        $id = "";
+        $email = "";
+        $password = "";
+        $role = "";
+        $erreur = [];
+
+        if(!empty($_POST)){ // Si formulaire remplie
+            $email = isset($_POST["email"]) ? $_POST["email"] : $email;  // Si $_POST["email] EXISTE ===> $email prend $_POST["email]
+            $password = isset($_POST["password"]) ? $_POST["password"] : $password;
+            $role = isset($_POST["role"]) ? $_POST["role"] : $role;
+
+            // Vérifier que les valeurs saisies sont conformes !!!
+            // Si ce n'est pas bon ==> Afficher sur le formulaire les erreurs
+            if(!filter_var($email , FILTER_VALIDATE_EMAIL)){
+                $erreur[] = "l'email n'est pas conforme"; 
+            }
+            if(!preg_match("#(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}#", $password)){
+                $erreur[] = "Le password doit contenir au minimum 8 lettres avec minuscule, majuscule et chiffre";
+            }
+            // Verifier que l'email est bien unique
+            // utiliser une syntaxe spéciale dans ma requette SQL
+            // :email
+            // Sécurité : Evité l'injection SQL (requette préparée)
+            $user = BDD::getInstance()->query("SELECT * FROM user WHERE email = :email", ["email" => $email]);
+            if(!empty($user)){
+                $erreur[]= "L'email existe déjà, veuillez en choisir un autre";
+            }
+
+            // Vérifier le role d'utilisateur
+            $roles = ["redacteur", "admin"];
+            if(!in_array($role, $roles)){
+                $erreur[] = "Veuillez sélectionner un role dans le menu déroulant";
+            }
+
+        }
+
+        if(count($erreur) === 0 && !empty($_POST)){
+            BDD::getInstance()->query("INSERT INTO user (email, password, role) VALUE (:email, :password, :role)" , [
+                "email" => $email,
+                "password" => password_hash($password, PASSWORD_BCRYPT),
+                "role" => $role
+            ]);
+
+            header("Location: " . URL . "?page=admin/user");
+            die();
+        }
+
         $data = [
-            "titre" => "Créer un nouveau profil utilisateur"
+            "titre" => "Créer un nouveau profil utilisateur",
+            "data_form" => [
+                "id" => $id,
+                "email" => $email,
+                "password" => $password,
+                "role" => $role
+            ],
+            "erreur" => $erreur
         ];
         $this->render("back/user_form", $data);
     }
 
 
+    // Delete user :
+    public function user_delete(string $id){
+
+        $user = BDD::getInstance()->query("SELECT * FROM user WHERE id = :id" , ["id" => $id]);
+        if(empty($user)){
+            $data = [
+                "titre" => "impossible de supprimer le profil utilisateur",
+                "contenu" => [
+                    "num" => 404,
+                    "message" => "l'utilisateur que vous souhaiter supprimer n'existe pas"
+                ]
+                ];
+            $this->render("erreur" , $data);
+            die(); 
+        }
+        
+        // Impossible de supprimer son propre compte :
+        if($user[0]["email"] == $_SESSION["user"]["email"]){
+            $data = [
+                "titre" => "impossible de s'auto supprimer",
+                "contenu" => [
+                    "num" => 404,
+                    "message" => "Impossible de supprimer ton propre compte"
+                ]
+                ];
+            $this->render("erreur" , $data);
+            die(); 
+        }
+
+        // Impossible de supprimer l'admin :
+        if($_SESSION["user"]["role"] != "admin"){
+            $data = [
+                "titre" => "Vous n'avez pas suffisament de droit",
+                "contenu" => [
+                    "num" => 404,
+                    "message" => "Vous devez etre admin pour supprimer uncompte utilisateur"
+                ]
+                ];
+            $this->render("erreur" , $data);
+            die(); 
+        }
+
+        BDD::getInstance()->query("DALETE FROM user WHERE id = :id" , ["id" => $id]);
+        header("Location: " . URL . "?page=admin/user");
+
+
+
+    }
+
+
+    // Modif user :
+        public function user_update(string $id){
+
+            $user = BDD::getInstance()->query("SELECT * FROM user WHERE id = :id" , [ "id" => $id ]);
+    
+            if(empty($user)){
+                $data = [
+                    "titre" => "impossible de supprimer le profil utilisateur",
+                    "contenu" => [
+                        "num" => 404,
+                        "message" => "le profil que vous souhaitez supprimer n'existe pas"
+                    ]
+                    ];
+                $this->render("erreur" , $data);
+                die(); 
+            }
+    
+    
+            $email = $user[0]["email"];
+            $password = "";
+            $role = $user[0]["role"]; 
+            $erreur = [];
+    
+            if(!empty($_POST)){
+                $email = isset($_POST["email"]) ? $_POST["email"] : $email ;
+                $password = isset($_POST["password"]) ? $_POST["password"] : $password ;
+                $role = isset($_POST["role"]) ? $_POST["role"] : $role ;
+    
+                if(!filter_var($email , FILTER_VALIDATE_EMAIL)){
+                    $erreur[] = "l'email n'est pas conforme"; 
+                }      
+                
+                if(strlen($password) != 0 && !preg_match("#(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}#", $password)){
+                    $erreur[] = "le password doit contenir au minimum 8 lettres avec minuscule, majuscule et chiffre"; 
+                }
+    
+                $user = BDD::getInstance()->query("SELECT * FROM user WHERE email = :email_form AND id = :id" , [
+                    "email_form" => $email  ,
+                    "id" => $id
+                    ]
+                );
+                // Qwerty1234!
+
+                if(count($user) !== 1 && $_SESSION["user"]["email"] === $email ){
+                    $erreur[] = "l'email soumis est déjà utilisé, veuillez en choisir un autre"; 
+                }
+    
+                $roles = ["redacteur", "admin"];
+                if(!in_array($role, $roles)){
+                    $erreur[] = "veuillez sélectionner un role dans le menu déroulant"; 
+                }
+    
+            }
+    
+            if(count($erreur) === 0 && !empty($_POST)){
+    
+                if(strlen($password) === 0){
+                    BDD::getInstance()->query("UPDATE user SET email = :email ,  role = :role WHERE id = :id", [
+                        "id" => $id, 
+                        "email" => $email ,
+                        "role" => $role
+                    ] );
+                }else {
+                    BDD::getInstance()->query("UPDATE user SET email = :email ,  role = :role , password = :password WHERE id = :id", [
+                        "id" => $id, 
+                        "email" => $email ,
+                        "password" => password_hash($password, PASSWORD_BCRYPT),
+                        "role" => $role
+                    ] );
+                }
+    
+                header("Location: " . URL . "?page=admin/user");
+                die(); 
+            }
+    
+            $data = [
+                "titre" => "mise à jour d'un profil utilisateur",
+                "data_form" => [
+                    "id" => $id,
+                    "email" => $email,
+                    "password" => $password,
+                    "role" => $role
+                ],
+                "erreur" => $erreur
+            ];
+            $this->render("back/user_form" , $data); 
+        }
 }
