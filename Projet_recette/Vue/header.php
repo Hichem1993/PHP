@@ -29,7 +29,9 @@
                         </li>
                         <?php else : ?>
                         <li class="nav-item"><a href="<?php echo URL ?>?page=deconnexion" class="nav-link text-white">Déconnexion</a></li>
+                        <li class="nav-item"><a class="nav-link text-white">Bienvenue : <?php echo $_SESSION["user"]["email"] ?></a> </li>
                         <?php endif ?>
+                        
                     </ul>
                     </div>
                 </div>

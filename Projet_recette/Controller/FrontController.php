@@ -5,11 +5,55 @@ class FrontController extends AbstractController {
     // Attention il faut mettre home en minuscule (comme mentionné dans le $routes)
 
     public function home(){
+
+        $sql=
+        "
+        SELECT r.id, r.titre , r.description, r.url_img, r.durre, r.dt_creation, c.nom, u.email
+        FROM recettes AS r
+        JOIN categories AS c
+        ON r.categorie_id = c.id
+        JOIN users AS u
+        ON r.user_id = u.id
+        ";
+
+        //$recettes = BDD::getInstance()->query($sql);
+        //var_dump($recettes);
+
         $data = [
-            "titre" => "Recette de cuisine"
+            "titre" => "Recette de cuisine",
+            "recettes" => BDD::getInstance()->query($sql)
         ];
         $this->render("home", $data);
     }
+
+
+
+
+    public function recette(string $id){
+
+        $sql=
+        "
+        SELECT r.id, r.titre , r.description, r.url_img, r.durre, r.dt_creation, c.nom, u.email
+        FROM recettes AS r
+        JOIN categories AS c
+        ON r.categorie_id = c.id
+        JOIN users AS u
+        ON r.user_id = u.id
+        where r.id = :id
+        ";
+
+        //$recettes = BDD::getInstance()->query($sql , ["id" => $id]);
+        //var_dump($recettes);
+
+        $data = [
+            "titre" => "Recettes",
+            "recettes" => BDD::getInstance()->query($sql , ["id" => $id])
+        ];
+
+        $this->render("recette", $data);
+        
+    }
+
 
 
     public function mention(){

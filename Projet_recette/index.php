@@ -5,6 +5,15 @@ session_start();
 
 define("URL", "http://192.168.56.11/Projet_recette/index.php");
 
+
+// Pour le nombre des mots de la description de la card :
+function more(string $text , int $nb_words = 10)
+{
+    $words = explode(" ", $text);
+    $result = array_slice($words, 0 , $nb_words);
+    return implode( " ", $result);
+}
+
 $page = "";
 
 //? Est ce que il ya page dans url  ET  page n'est pas vide :
@@ -22,7 +31,9 @@ $routes = [
     "inscription" => ["inscription" , "FrontController"],
     "connexion" => ["connexion" , "FrontController"],
     "mention" => ["mention" , "FrontController"],
-    "deconnexion" => ["deconnexion" , "FrontController"]
+    "deconnexion" => ["deconnexion" , "FrontController"],
+    "recette" => ["recette", "FrontController"],
+    "erreur401" => ["erreur401" , "ErreurController"]
 ];
 
 
@@ -33,6 +44,7 @@ require_once "Model/BDD.php";
 //? Executer les méthodes :
 require_once "Controller/AbstractController.php";
 require_once "Controller/FrontController.php";
+require_once "Controller/ErreurController.php";
 
 
 if(array_key_exists($page , $routes)){
