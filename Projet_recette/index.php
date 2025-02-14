@@ -21,7 +21,8 @@ $routes = [
     "/" => ["home" , "FrontController"],   // méthode qui est dans un controlleur
     "inscription" => ["inscription" , "FrontController"],
     "connexion" => ["connexion" , "FrontController"],
-    "mention" => ["mention" , "FrontController"]
+    "mention" => ["mention" , "FrontController"],
+    "deconnexion" => ["deconnexion" , "FrontController"]
 ];
 
 
