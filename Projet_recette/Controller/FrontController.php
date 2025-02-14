@@ -4,6 +4,8 @@ class FrontController extends AbstractController {
     // Cette méthode est en charge de l'affichage dela page d'accueil du site
     // Attention il faut mettre home en minuscule (comme mentionné dans le $routes)
 
+
+
     public function home(){
 
         $sql=
@@ -42,17 +44,40 @@ class FrontController extends AbstractController {
         where r.id = :id
         ";
 
+        $sql_comm=
+        "
+        SELECT c.id, c.email , c.message, c.dt_creation, c.is_active, r.titre
+        FROM commentaires AS c
+        JOIN recettes AS r
+        ON c.recette_id = r.id
+        where c.recette_id = :id
+        ";
+
         //$recettes = BDD::getInstance()->query($sql , ["id" => $id]);
         //var_dump($recettes);
 
+        if( !empty($_POST) ){
+            BDD::getInstance()->query("INSERT INTO commentaires (email , message , recette_id) VALUES (:email , :message , :recette_id)", [
+                "email" => isset($_POST["email"]) ? $_POST["email"] : $_SESSION["user"]["email"],
+                "message" => $_POST["commentaire"],
+                "recette_id" => $id
+            ]);
+        }
+
+
         $data = [
             "titre" => "Recettes",
-            "recettes" => BDD::getInstance()->query($sql , ["id" => $id])
+            "recettes" => BDD::getInstance()->query($sql , ["id" => $id]),
+            "commentaires" => BDD::getInstance()->query($sql_comm , ["id" => $id]),
+            "show_email" => isset($_SESSION["user"])
         ];
 
         $this->render("recette", $data);
+
         
     }
+
+
 
 
 
@@ -62,6 +87,8 @@ class FrontController extends AbstractController {
         ];
         $this->render("mention", $data);
     }
+
+
 
 
     public function inscription(){
@@ -119,6 +146,7 @@ class FrontController extends AbstractController {
 
 
 
+
     public function connexion(){
         $erreur = [];
         
@@ -166,6 +194,8 @@ class FrontController extends AbstractController {
     ];
     $this->render("connexion" , $data);
     }
+
+
 
 
     public function deconnexion(){
